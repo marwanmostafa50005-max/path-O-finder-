@@ -1,0 +1,25 @@
+[
+  {
+    "abstain_reason": "value 4.4 sits inside stated range '3.5-5.2' but lab flagged H",
+    "abstained": true,
+    "analyte_canonical": "potassium",
+    "analyte_raw": "Potassium",
+    "coherence_status": "conflict",
+    "confidence": 1.0,
+    "extraction_tier": 1,
+    "lab_abnormal_flag": "H",
+    "loinc": "2823-3",
+    "obx_identifier": "2823-3^Potassium^LN",
+    "obx_result_status": "F",
+    "obx_sub_id": null,
+    "obx_value_type": "NM",
+    "provenance_json": "{\"tier\":1,\"segment_path\":\"OBR[1]/OBX[1]-5\",\"page\":null,\"bboxes\":[],\"engine\":\"hl7-tier1\"}",
+    "ref_high": 5.2,
+    "ref_low": 3.5,
+    "ref_range_raw": "3.5-5.2",
+    "unit_canonical": "mmol/L",
+    "unit_raw": "mmol/L",
+    "value_num": 4.4,
+    "value_raw": "4.4"
+  }
+]

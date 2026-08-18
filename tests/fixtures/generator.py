@@ -72,8 +72,8 @@ def hl7_multi_obr_all_types() -> str:
         _obr(2, "FIL-2002", "MISC", "Miscellaneous"),
         "OBX|1|TX|55752-0^Clinical comment^LN||Long free text comment line.||||||F",
         "OBX|2|FT|55752-0^Formatted^LN||\\H\\Bold\\N\\ formatted text||||||F",
-        "OBX|3|CE|600-7^Culture^LN||POS^Positive^L||||POS~A|||F",       # coded + qual flags
-        "OBX|4|CWE|6463-4^Organism^LN||EColi^Escherichia coli^L||||A|||F",
+        "OBX|3|CE|600-7^Culture^LN||POS^Positive^L|||POS~A|||F",       # coded + qual flags
+        "OBX|4|CWE|6463-4^Organism^LN||EColi^Escherichia coli^L|||A|||F",
         "OBX|5|RP|11502-2^Report link^LN||RP-123^^PDF||||||F",
     ]
     return CR.join(segs)

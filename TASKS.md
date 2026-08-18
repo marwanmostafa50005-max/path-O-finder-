@@ -24,18 +24,18 @@ for resuming.
 - [x] T23 tests: sniffing, idempotency invariant, never-drop invariant, truncated batch
 
 ## Phase 3 — extraction
-- [ ] T30 extraction/records.py canonical record + provenance dataclasses
-- [ ] T31 extraction/hl7_tier1.py (all OBX-2 types, repeating OBX-8, OBX-11 P/C
+- [x] T30 extraction/records.py canonical record + provenance dataclasses
+- [x] T31 extraction/hl7_tier1.py (all OBX-2 types, repeating OBX-8, OBX-11 P/C
       supersession, ED base64 PDF extraction, NTE)
-- [ ] T32 extraction/pit.py (standalone + embedded-in-OBX)
-- [ ] T33 extraction/pdf_tier2.py (pdfplumber bboxes → pypdfium2+tesseract OCR,
+- [x] T32 extraction/pit.py (standalone + embedded-in-OBX)
+- [x] T33 extraction/pdf_tier2.py (pdfplumber bboxes → pypdfium2+tesseract OCR,
       confidence gate 80 default)
-- [ ] T34 extraction/vlm_tier3.py (hardware detect, llama-server JSON-constrained,
+- [x] T34 extraction/vlm_tier3.py (hardware detect, llama-server JSON-constrained,
       grounded bbox required, multi-pass agreement, graceful disable)
-- [ ] T35 extraction/coherence.py (value-vs-range-vs-flag, plausibility bounds,
+- [x] T35 extraction/coherence.py (value-vs-range-vs-flag, plausibility bounds,
       unit/decimal sanity) + resources/plausibility_bounds.yaml
-- [ ] T36 extraction/normalize.py (SPIA seed + test_aliases table)
-- [ ] T37 tests: tier1 golden files, PIT, coherence-abstain invariant,
+- [x] T36 extraction/normalize.py (SPIA seed + test_aliases table)
+- [x] T37 tests: tier1 golden files, PIT, coherence-abstain invariant,
       zero-false-abnormal invariant, correction supersession
 
 ## Phase 4 — detection & action-state
@@ -70,4 +70,4 @@ for resuming.
 - [ ] T83 Final: full test run green, license check green, Definition-of-Done
       self-review, final push
 
-**NEXT TASK: T30**
+**NEXT TASK: T40**

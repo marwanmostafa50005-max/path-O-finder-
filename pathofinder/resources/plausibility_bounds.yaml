@@ -1,0 +1,44 @@
+# Physiological plausibility HARD BOUNDS — extraction sanity gates ONLY.
+#
+# These are NOT reference ranges and NOT clinical judgements. They are wide,
+# unphysiological limits seeded from RCPA harmonised reference intervals and
+# used solely to catch EXTRACTION ERRORS (misplaced decimals, unit slips,
+# OCR misreads). A value outside its bound is treated as unreadable and the
+# item ABSTAINS to "check-yourself" — no value is ever "corrected".
+#
+# expected_units lists unit spellings compatible with the analyte; a value
+# reported in an incompatible unit is a coherence conflict → abstain.
+
+version: 1
+analytes:
+  potassium:        { min: 0.5,  max: 12,     expected_units: [mmol/L] }
+  sodium:           { min: 80,   max: 200,    expected_units: [mmol/L] }
+  chloride:         { min: 50,   max: 160,    expected_units: [mmol/L] }
+  bicarbonate:      { min: 2,    max: 60,     expected_units: [mmol/L] }
+  urea:             { min: 0.1,  max: 100,    expected_units: [mmol/L] }
+  creatinine:       { min: 5,    max: 4000,   expected_units: [umol/L, µmol/L] }
+  egfr:             { min: 0,    max: 200,    expected_units: [mL/min/1.73m2, mL/min/1.73m^2] }
+  haemoglobin:      { min: 20,   max: 250,    expected_units: [g/L] }
+  wcc:              { min: 0.05, max: 500,    expected_units: [10*9/L, x10^9/L, 10^9/L] }
+  platelets:        { min: 1,    max: 3000,   expected_units: [10*9/L, x10^9/L, 10^9/L] }
+  ferritin:         { min: 0.5,  max: 50000,  expected_units: [ug/L, µg/L, ng/mL] }
+  tsh:              { min: 0.005, max: 500,   expected_units: [mIU/L, mU/L] }
+  hba1c:            { min: 15,   max: 200,    expected_units: ["mmol/mol"] }
+  hba1c_percent:    { min: 3,    max: 25,     expected_units: ["%"] }
+  glucose:          { min: 0.3,  max: 100,    expected_units: [mmol/L] }
+  calcium:          { min: 0.5,  max: 5,      expected_units: [mmol/L] }
+  magnesium:        { min: 0.1,  max: 5,      expected_units: [mmol/L] }
+  phosphate:        { min: 0.1,  max: 10,     expected_units: [mmol/L] }
+  albumin:          { min: 5,    max: 70,     expected_units: [g/L] }
+  bilirubin:        { min: 0.5,  max: 1000,   expected_units: [umol/L, µmol/L] }
+  alt:              { min: 0,    max: 20000,  expected_units: [U/L] }
+  ast:              { min: 0,    max: 20000,  expected_units: [U/L] }
+  alp:              { min: 0,    max: 10000,  expected_units: [U/L] }
+  ggt:              { min: 0,    max: 20000,  expected_units: [U/L] }
+  crp:              { min: 0,    max: 1000,   expected_units: [mg/L] }
+  troponin_i:       { min: 0,    max: 100000, expected_units: [ng/L] }
+  vitamin_d:        { min: 1,    max: 700,    expected_units: [nmol/L] }
+  inr:              { min: 0.5,  max: 30,     expected_units: ["", ratio] }
+  cholesterol:      { min: 0.5,  max: 30,     expected_units: [mmol/L] }
+  triglycerides:    { min: 0.1,  max: 150,    expected_units: [mmol/L] }
+  psa:              { min: 0,    max: 20000,  expected_units: [ug/L, µg/L, ng/mL] }

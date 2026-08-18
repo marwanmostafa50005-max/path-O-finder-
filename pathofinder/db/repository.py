@@ -100,17 +100,25 @@ class Repository:
 
     def find_result_for_correction(self, filler_order_number: str | None,
                                    obx_identifier: str | None,
-                                   obx_sub_id: str | None) -> int | None:
-        """Locate the prior (non-superseded) result an OBX-11=C corrects,
-        matched via filler order number + OBX-3 + OBX-4 sub-id."""
+                                   obx_sub_id: str | None,
+                                   exclude_result_id: int | None = None,
+                                   only_status: str | None = None) -> int | None:
+        """Locate a matching non-superseded result for correction handling,
+        matched via filler order number + OBX-3 + OBX-4 sub-id. With
+        only_status='C', finds an already-stored correction (for the
+        out-of-order case where a P/F arrives after its C)."""
         if not obx_identifier:
             return None
         row = self.conn.execute(
             "SELECT r.result_id FROM results r JOIN orders o ON o.order_id=r.order_id"
             " WHERE o.filler_order_number IS ? AND r.obx_identifier IS ?"
             " AND r.obx_sub_id IS ? AND r.superseded_by IS NULL"
+            " AND (? IS NULL OR r.result_id != ?)"
+            " AND (? IS NULL OR r.obx_result_status IS ?)"
             " ORDER BY r.result_id DESC LIMIT 1",
-            (filler_order_number, obx_identifier, obx_sub_id),
+            (filler_order_number, obx_identifier, obx_sub_id,
+             exclude_result_id, exclude_result_id,
+             only_status, only_status),
         ).fetchone()
         return row[0] if row else None
 

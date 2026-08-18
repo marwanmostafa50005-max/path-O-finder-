@@ -51,8 +51,8 @@ for resuming.
       gating (no citation for low-confidence)
 
 ## Phase 6 — pipeline & no-network
-- [ ] T60 pipeline.py: run orchestration (initials-gated), runs table, end-to-end
-- [ ] T61 tests: integration end-to-end on fixtures; NO-NETWORK invariant test
+- [x] T60 pipeline.py: run orchestration (initials-gated), runs table, end-to-end
+- [x] T61 tests: integration end-to-end on fixtures; NO-NETWORK invariant test
 
 ## Phase 7 — UI
 - [ ] T70 ui/theme.py (palette §12, Poppins bundled) + app.py entry
@@ -70,4 +70,4 @@ for resuming.
 - [ ] T83 Final: full test run green, license check green, Definition-of-Done
       self-review, final push
 
-**NEXT TASK: T60**
+**NEXT TASK: T70**

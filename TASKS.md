@@ -39,9 +39,9 @@ for resuming.
       zero-false-abnormal invariant, correction supersession
 
 ## Phase 4 — detection & action-state
-- [ ] T40 detection/severity.py + grace.py + flags.py + resources/grace_matrix.yaml (DRAFT)
-- [ ] T41 actionstate/closedloop.py + dispositions.py + suppression.py
-- [ ] T42 tests: grace deadlines, suppression-only-by-human invariant
+- [x] T40 detection/severity.py + grace.py + flags.py + resources/grace_matrix.yaml (DRAFT)
+- [x] T41 actionstate/closedloop.py + dispositions.py + suppression.py
+- [x] T42 tests: grace deadlines, suppression-only-by-human invariant
 
 ## Phase 5 — presentation & guidelines
 - [ ] T50 presentation/queue.py ranking (check-yourself sunk) + scheduler.py
@@ -70,4 +70,4 @@ for resuming.
 - [ ] T83 Final: full test run green, license check green, Definition-of-Done
       self-review, final push
 
-**NEXT TASK: T40**
+**NEXT TASK: T50**

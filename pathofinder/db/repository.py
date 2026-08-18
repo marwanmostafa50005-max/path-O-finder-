@@ -61,8 +61,9 @@ class Repository:
                        raw_blob: bytes | None = None,
                        control_id: str | None = None,
                        quarantine_reason: str | None = None) -> int:
+        verb = "INSERT OR IGNORE" if status == "duplicate" else "INSERT"
         cur = self.conn.execute(
-            "INSERT INTO messages (source_adapter, original_path, file_type, sha256,"
+            f"{verb} INTO messages (source_adapter, original_path, file_type, sha256,"
             " received_at, processed_at, status, quarantine_reason, raw_blob,"
             " hl7_msh_control_id) VALUES (?,?,?,?,?,?,?,?,?,?)",
             (source_adapter, original_path, file_type, sha256, _now(),

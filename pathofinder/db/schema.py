@@ -35,7 +35,7 @@ CREATE TABLE messages (
     quarantine_reason   TEXT,
     raw_blob            BLOB,
     hl7_msh_control_id  TEXT,
-    UNIQUE (sha256)
+    UNIQUE (sha256, status)
 );
 CREATE INDEX idx_messages_control ON messages (hl7_msh_control_id);
 

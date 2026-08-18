@@ -17,11 +17,11 @@ for resuming.
 - [x] T14 tests: schema, audit immutability invariant, hash chain verify
 
 ## Phase 2 — ingestion
-- [ ] T20 ingestion/sniffer.py (HL7 | MLLP | batch FHS/BHS/BTS/FTS + truncation |
+- [x] T20 ingestion/sniffer.py (HL7 | MLLP | batch FHS/BHS/BTS/FTS + truncation |
       PIT | PDF; never trust extensions)
-- [ ] T21 ingestion/watcher.py (copy-only, sha256, idempotent, read-only source)
-- [ ] T22 ingestion/quarantine.py + adapters.py (4 thin adapters)
-- [ ] T23 tests: sniffing, idempotency invariant, never-drop invariant, truncated batch
+- [x] T21 ingestion/watcher.py (copy-only, sha256, idempotent, read-only source)
+- [x] T22 ingestion/quarantine.py + adapters.py (4 thin adapters)
+- [x] T23 tests: sniffing, idempotency invariant, never-drop invariant, truncated batch
 
 ## Phase 3 — extraction
 - [ ] T30 extraction/records.py canonical record + provenance dataclasses
@@ -70,4 +70,4 @@ for resuming.
 - [ ] T83 Final: full test run green, license check green, Definition-of-Done
       self-review, final push
 
-**NEXT TASK: T20**
+**NEXT TASK: T30**

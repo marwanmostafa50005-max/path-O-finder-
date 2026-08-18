@@ -5,16 +5,16 @@ for resuming.
 
 ## Phase 0 — scaffold
 - [x] T00 venv + deps installed; tesseract installed (env only, not committed)
-- [ ] T01 Repo scaffold: CLAUDE.md, TASKS.md, .gitignore, LICENSE (proprietary),
+- [x] T01 Repo scaffold: CLAUDE.md, TASKS.md, .gitignore, LICENSE (proprietary),
       pyproject.toml, brand/ move, package skeleton — commit `chore: scaffold`
-- [ ] T02 THIRD_PARTY_LICENSES.md initial + scripts/license_check.py
+- [x] T02 THIRD_PARTY_LICENSES.md initial + scripts/license_check.py
 
 ## Phase 1 — data layer
-- [ ] T10 db/connection.py (SQLCipher, keyring passphrase, plain-sqlite dev escape)
-- [ ] T11 db/schema.py full schema §5 + migrations + audit triggers
-- [ ] T12 db/audit.py hash-chained append-only log + verify
-- [ ] T13 db/repository.py typed CRUD for all tables
-- [ ] T14 tests: schema, audit immutability invariant, hash chain verify
+- [x] T10 db/connection.py (SQLCipher, keyring passphrase, plain-sqlite dev escape)
+- [x] T11 db/schema.py full schema §5 + migrations + audit triggers
+- [x] T12 db/audit.py hash-chained append-only log + verify
+- [x] T13 db/repository.py typed CRUD for all tables
+- [x] T14 tests: schema, audit immutability invariant, hash chain verify
 
 ## Phase 2 — ingestion
 - [ ] T20 ingestion/sniffer.py (HL7 | MLLP | batch FHS/BHS/BTS/FTS + truncation |
@@ -70,4 +70,4 @@ for resuming.
 - [ ] T83 Final: full test run green, license check green, Definition-of-Done
       self-review, final push
 
-**NEXT TASK: T01**
+**NEXT TASK: T20**

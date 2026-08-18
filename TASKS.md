@@ -44,10 +44,10 @@ for resuming.
 - [x] T42 tests: grace deadlines, suppression-only-by-human invariant
 
 ## Phase 5 — presentation & guidelines
-- [ ] T50 presentation/queue.py ranking (check-yourself sunk) + scheduler.py
-- [ ] T51 guidelines/citations.py + resources/citation_map.yaml (DRAFT §10 content)
-- [ ] T52 config/loader.py versioned YAML editing
-- [ ] T53 tests: ranking invariant (abstained never outranks confident), citation
+- [x] T50 presentation/queue.py ranking (check-yourself sunk) + scheduler.py
+- [x] T51 guidelines/citations.py + resources/citation_map.yaml (DRAFT §10 content)
+- [x] T52 config/loader.py versioned YAML editing
+- [x] T53 tests: ranking invariant (abstained never outranks confident), citation
       gating (no citation for low-confidence)
 
 ## Phase 6 — pipeline & no-network
@@ -70,4 +70,4 @@ for resuming.
 - [ ] T83 Final: full test run green, license check green, Definition-of-Done
       self-review, final push
 
-**NEXT TASK: T50**
+**NEXT TASK: T60**

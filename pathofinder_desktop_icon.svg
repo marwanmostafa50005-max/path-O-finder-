@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+<defs><radialGradient id="oxi" cx="38%" cy="34%" r="72%"><stop offset="0%" stop-color="#C85562"/><stop offset="100%" stop-color="#8A2233"/></radialGradient></defs>
+<rect x="0" y="0" width="512" height="512" rx="112.64" fill="#0E2A2B"/>
+<line x1="113.1" y1="226.7" x2="151.4" y2="226.7" stroke="#41BDB4" stroke-width="22.5" stroke-linecap="round"/>
+<line x1="360.6" y1="226.7" x2="398.9" y2="226.7" stroke="#41BDB4" stroke-width="22.5" stroke-linecap="round"/>
+<line x1="311.4" y1="315.5" x2="357.9" y2="389.9" stroke="#41BDB4" stroke-width="29.2" stroke-linecap="round"/>
+<circle cx="256.0" cy="226.7" r="92.2" fill="url(#oxi)" stroke="#41BDB4" stroke-width="24.7"/>
+<ellipse cx="224.6" cy="188.0" rx="24.0" ry="10.6" fill="#fff" opacity="0.30" transform="rotate(-32 224.6 188.0)"/>
+</svg>

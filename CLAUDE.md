@@ -88,6 +88,24 @@ page + pixel bbox).
 - PyInstaller/Inno run on the Windows build host via installer/build_windows.ps1;
   spec + iss are validated files in repo.
 
+## Current state (2026-08-18)
+
+BUILD COMPLETE. All 87 tests green (unit + integration + invariants + golden),
+licence gate green, UI smoke-tested offscreen. Definition of Done met with two
+Windows-host caveats recorded honestly:
+  - PyInstaller/Inno Setup run on a Windows build host via
+    installer/build_windows.ps1 (this Linux container validated the spec/iss
+    files and the icon, and ships the scripts; the binary installer itself
+    must be produced on Windows).
+  - The desktop-shortcut launch is verified by the installer script's
+    post-install run step + the shipping-posture invariants; final manual
+    confirmation happens on the Windows host per README.
+
+Remaining founder work (clinical, not engineering):
+  - Review/replace DRAFT grace_matrix.yaml values.
+  - Verify citation_map.yaml editions/URLs (cadence reminder is built in).
+  - Build the installer on a Windows host; validate on an offline VM.
+
 ## How to resume
 
 1. `source .venv/bin/activate` (or create: `python3.11 -m venv .venv && pip install -e .[dev]`)

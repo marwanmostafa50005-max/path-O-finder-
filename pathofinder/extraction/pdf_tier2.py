@@ -15,6 +15,7 @@ from __future__ import annotations
 import io
 import re
 from dataclasses import dataclass
+from pathlib import Path
 
 from .hl7_tier1 import parse_ref_range
 from .records import ExtractedResult, Provenance, Tier
@@ -72,14 +73,30 @@ def native_pages(pdf_bytes: bytes) -> list[PageText]:
     return pages
 
 
-def tesseract_available() -> bool:
+def _tesseract_cmd() -> str | None:
+    """Bundled engine first (PyInstaller vendor dir), then PATH."""
     import shutil
-    return shutil.which("tesseract") is not None
+    import sys
+    base = getattr(sys, "_MEIPASS", None)
+    if base:
+        for name in ("tesseract.exe", "tesseract"):
+            cand = Path(base) / "vendor" / "tesseract" / name
+            if cand.exists():
+                return str(cand)
+    return shutil.which("tesseract")
+
+
+def tesseract_available() -> bool:
+    return _tesseract_cmd() is not None
 
 
 def ocr_pages(pdf_bytes: bytes) -> list[PageText]:
     import pypdfium2 as pdfium
     import pytesseract
+
+    cmd = _tesseract_cmd()
+    if cmd:
+        pytesseract.pytesseract.tesseract_cmd = cmd
 
     pages: list[PageText] = []
     doc = pdfium.PdfDocument(pdf_bytes)

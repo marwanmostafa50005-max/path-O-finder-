@@ -63,11 +63,11 @@ for resuming.
 - [x] T75 ui smoke tests (offscreen)
 
 ## Phase 8 — packaging & docs
-- [ ] T80 scripts/generate_icon.py multi-res .ico from brand/icon_1024.png
-- [ ] T81 installer/pathofinder.spec + installer.iss + build_windows.ps1 +
+- [x] T80 scripts/generate_icon.py multi-res .ico from brand/icon_1024.png
+- [x] T81 installer/pathofinder.spec + installer.iss + build_windows.ps1 +
       fetch_vlm_model.py + fetch_fonts (Poppins bundled)
-- [ ] T82 README.md full; THIRD_PARTY_LICENSES.md complete; licence texts shipped
-- [ ] T83 Final: full test run green, license check green, Definition-of-Done
+- [x] T82 README.md full; THIRD_PARTY_LICENSES.md complete; licence texts shipped
+- [x] T83 Final: full test run green, license check green, Definition-of-Done
       self-review, final push
 
-**NEXT TASK: T80**
+**NEXT TASK: (none — build complete; see CLAUDE.md "Current state")**

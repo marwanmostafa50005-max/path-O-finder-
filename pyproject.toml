@@ -28,6 +28,7 @@ sqlcipher = ["sqlcipher3-wheels>=0.5"]   # BSD; self-contained SQLCipher binary 
 dev = [
     "pytest>=8",
     "pip-licenses>=4",
+    "reportlab>=4",       # BSD; test-fixture PDF generation only, never shipped
 ]
 
 [project.gui-scripts]

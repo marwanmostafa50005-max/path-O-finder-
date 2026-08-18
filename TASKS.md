@@ -55,12 +55,12 @@ for resuming.
 - [x] T61 tests: integration end-to-end on fixtures; NO-NETWORK invariant test
 
 ## Phase 7 — UI
-- [ ] T70 ui/theme.py (palette §12, Poppins bundled) + app.py entry
-- [ ] T71 ui/signon + main window + queue view
-- [ ] T72 ui/detail (why-flagged + provenance viewer) + disposition bar
-- [ ] T73 ui/settings (folder, closed-loop mode, grace/citation/alias editors, VLM)
-- [ ] T74 ui/audit viewer + about page (EXACT §12 copy)
-- [ ] T75 ui smoke tests (offscreen)
+- [x] T70 ui/theme.py (palette §12, Poppins bundled) + app.py entry
+- [x] T71 ui/signon + main window + queue view
+- [x] T72 ui/detail (why-flagged + provenance viewer) + disposition bar
+- [x] T73 ui/settings (folder, closed-loop mode, grace/citation/alias editors, VLM)
+- [x] T74 ui/audit viewer + about page (EXACT §12 copy)
+- [x] T75 ui smoke tests (offscreen)
 
 ## Phase 8 — packaging & docs
 - [ ] T80 scripts/generate_icon.py multi-res .ico from brand/icon_1024.png
@@ -70,4 +70,4 @@ for resuming.
 - [ ] T83 Final: full test run green, license check green, Definition-of-Done
       self-review, final push
 
-**NEXT TASK: T70**
+**NEXT TASK: T80**

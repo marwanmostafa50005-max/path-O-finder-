@@ -1,0 +1,49 @@
+# =====================================================================
+# DRAFT — FOR CLINICIAN REVIEW. Pointer-only. Verify editions/URLs.
+# =====================================================================
+# Guideline layer: NAME, PUBLISHER, EDITION/DATE, SECTION, URL shown as
+# DISPLAY TEXT ONLY. No guideline body text is reproduced or cached; no
+# dose; no patient-specific recommendation. Free Australian references only
+# (paywalled Therapeutic Guidelines / AMH are deliberately excluded).
+# Edit in-app (Settings → Citation map); every change is versioned and
+# audited. The review-cadence reminder prompts re-verification of editions
+# and URLs every review_cadence_days.
+
+version: 0.1-DRAFT
+review_cadence_days: 180
+entries:
+  - concept: type_2_diabetes_hba1c
+    analytes: [hba1c]
+    name: "Management of type 2 diabetes: A handbook for general practice"
+    publisher: "RACGP (with Diabetes Australia)"
+    edition: "2024"
+    section: "Glycaemic targets / HbA1c"
+    url: "https://www.racgp.org.au/clinical-resources/clinical-guidelines/key-racgp-guidelines/view-all-racgp-guidelines/management-of-type-2-diabetes"
+  - concept: chronic_kidney_disease_egfr
+    analytes: [egfr, creatinine]
+    name: "Chronic Kidney Disease (CKD) Management in Primary Care"
+    publisher: "Kidney Health Australia"
+    edition: "5th edition, July 2024"
+    section: "Detection, diagnosis and staging of CKD"
+    url: "https://kidney.org.au/health-professionals/ckd-management-handbook"
+  - concept: iron_deficiency_ferritin
+    analytes: [ferritin]
+    name: "Patient Blood Management Guidelines (Module 3 – Medical)"
+    publisher: "National Blood Authority (Australia)"
+    edition: "Module 3, as current on blood.gov.au"
+    section: "Iron deficiency anaemia"
+    url: "https://www.blood.gov.au/clinical-guidance/patient-blood-management/patient-blood-management-pbm-resources"
+  - concept: vitamin_d_deficiency
+    analytes: [vitamin_d]
+    name: "Vitamin D and health in adults in Australia and New Zealand: a position statement"
+    publisher: "ANZBMS, ESA & Osteoporosis Australia"
+    edition: "2012 (dated — verify for newer)"
+    section: "Management of vitamin D deficiency"
+    url: "https://www.mja.com.au/journal/2012/196/11/vitamin-d-and-health-adults-australia-and-new-zealand-position-statement"
+  - concept: thyroid_tsh
+    analytes: [tsh]
+    name: "Guidelines for preventive activities in general practice (Red Book) — Thyroid"
+    publisher: "RACGP"
+    edition: "10th edition"
+    section: "Thyroid"
+    url: "https://www.racgp.org.au/clinical-resources/clinical-guidelines/key-racgp-guidelines/view-all-racgp-guidelines/preventive-activities-in-general-practice/metabolic/thyroid"

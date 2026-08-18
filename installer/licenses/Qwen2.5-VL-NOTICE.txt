@@ -1,0 +1,6 @@
+Qwen2.5-VL-7B-Instruct model weights (optional Tier-3) — Apache License 2.0
+
+Copyright (c) Alibaba Cloud. Licensed under the Apache License, Version 2.0.
+Only the 7B-Instruct variant is used; the 3B (research-only) and 72B
+(MAU-capped) variants are explicitly excluded from this product.
+The Apache-2.0 text: http://www.apache.org/licenses/LICENSE-2.0

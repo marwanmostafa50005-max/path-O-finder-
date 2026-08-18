@@ -1,0 +1,23 @@
+# =====================================================================
+# DRAFT DEFAULTS — FOR CLINICIAN REVIEW. NOT CLINICAL ADVICE.
+# =====================================================================
+# Grace matrix: how long each kind of flagged result may sit before it is
+# "overdue" in the morning queue. Per-analyte entries override the defaults
+# for that severity. THIS FILE IS THE FOUNDER'S CLINICAL WORK PRODUCT —
+# these values are placeholders awaiting his review and sign-off.
+# Edit in-app (Settings → Grace matrix); every change is versioned and
+# audited.
+
+version: 0.1-DRAFT
+defaults:
+  critical:   { grace_hours: 24 }
+  high:       { grace_hours: 72 }
+  borderline: { grace_hours: 168 }
+per_analyte:
+  potassium:       { critical: { grace_hours: 4 } }
+  haemoglobin:     { high: { grace_hours: 48 } }
+  creatinine_egfr: { high: { grace_hours: 72 } }
+  tsh:             { high: { grace_hours: 336 } }
+  ferritin:        { high: { grace_hours: 336 } }
+  vitamin_d:       { borderline: { grace_hours: 720 } }
+  hba1c:           { high: { grace_hours: 336 } }

@@ -1,0 +1,8 @@
+Qt for Python (PySide6) and Qt libraries — LGPL-3.0
+
+path-O-finder dynamically links against unmodified Qt libraries distributed
+as separate DLLs alongside the application, in accordance with the GNU Lesser
+General Public License v3. The complete LGPL-3.0 text is available at
+https://www.gnu.org/licenses/lgpl-3.0.html and in the Qt distribution.
+A practice may replace the Qt DLLs with compatible versions (LGPL §4d).
+Qt is Copyright (C) The Qt Company Ltd. and other contributors.

@@ -1,0 +1,100 @@
+# Seed test-name normalisation map, following the RCPA SPIA (Standardised
+# Pathology Informatics in Australia) preferred-term / LOINC reference sets.
+# The clinician-editable local alias table (test_aliases, in-app editor)
+# layers ON TOP of this seed and always wins on conflict.
+#
+# A raw name that matches nothing here or in test_aliases keeps its raw name
+# and is marked for clinician review — never guessed.
+
+version: 1
+canonical:
+  potassium:
+    loinc: "2823-3"
+    aliases: [potassium, "potassium level", "k", "k+", "serum potassium", "plasma potassium"]
+  sodium:
+    loinc: "2951-2"
+    aliases: [sodium, "na", "na+", "serum sodium"]
+  chloride:
+    loinc: "2075-0"
+    aliases: [chloride, "cl", "cl-"]
+  bicarbonate:
+    loinc: "1963-8"
+    aliases: [bicarbonate, "hco3", "hco3-", "co2", "total co2"]
+  urea:
+    loinc: "22664-7"
+    aliases: [urea, "blood urea", "bun"]
+  creatinine:
+    loinc: "14682-9"
+    aliases: [creatinine, "serum creatinine", "creat"]
+  egfr:
+    loinc: "62238-1"
+    aliases: [egfr, "e-gfr", "estimated gfr", "gfr estimated", "egfr (ckd-epi)"]
+  haemoglobin:
+    loinc: "718-7"
+    aliases: [haemoglobin, hemoglobin, "hb", "hgb"]
+  wcc:
+    loinc: "6690-2"
+    aliases: [wcc, "white cell count", "wbc", "leucocytes", "leukocytes"]
+  platelets:
+    loinc: "777-3"
+    aliases: [platelets, "platelet count", "plt"]
+  ferritin:
+    loinc: "2276-4"
+    aliases: [ferritin, "serum ferritin"]
+  tsh:
+    loinc: "3016-3"
+    aliases: [tsh, "thyroid stimulating hormone", "thyrotropin"]
+  hba1c:
+    loinc: "4548-4"
+    aliases: [hba1c, "haemoglobin a1c", "glycated haemoglobin", "hb a1c"]
+  glucose:
+    loinc: "2345-7"
+    aliases: [glucose, "blood glucose", "glucose fasting", "glucose random", "bgl"]
+  calcium:
+    loinc: "17861-6"
+    aliases: [calcium, "serum calcium", "ca", "corrected calcium", "calcium corrected"]
+  magnesium:
+    loinc: "19123-9"
+    aliases: [magnesium, "mg", "serum magnesium"]
+  phosphate:
+    loinc: "2777-1"
+    aliases: [phosphate, "po4", "serum phosphate"]
+  albumin:
+    loinc: "1751-7"
+    aliases: [albumin, "serum albumin"]
+  bilirubin:
+    loinc: "1975-2"
+    aliases: [bilirubin, "total bilirubin", "bilirubin total"]
+  alt:
+    loinc: "1742-6"
+    aliases: [alt, "alanine aminotransferase", "sgpt"]
+  ast:
+    loinc: "1920-8"
+    aliases: [ast, "aspartate aminotransferase", "sgot"]
+  alp:
+    loinc: "6768-6"
+    aliases: [alp, "alkaline phosphatase"]
+  ggt:
+    loinc: "2324-2"
+    aliases: [ggt, "gamma glutamyl transferase", "gamma gt"]
+  crp:
+    loinc: "1988-5"
+    aliases: [crp, "c-reactive protein", "c reactive protein"]
+  troponin_i:
+    loinc: "10839-9"
+    aliases: ["troponin i", "troponin-i", "hs troponin i", "troponin i high sensitivity"]
+  vitamin_d:
+    loinc: "1989-3"
+    aliases: ["vitamin d", "25-oh vitamin d", "25 hydroxy vitamin d", "vitamin d 25-oh"]
+  inr:
+    loinc: "6301-6"
+    aliases: [inr, "international normalised ratio", "international normalized ratio"]
+  cholesterol:
+    loinc: "2093-3"
+    aliases: [cholesterol, "total cholesterol", "cholesterol total"]
+  triglycerides:
+    loinc: "2571-8"
+    aliases: [triglycerides, "trigs"]
+  psa:
+    loinc: "2857-1"
+    aliases: [psa, "prostate specific antigen"]

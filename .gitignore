@@ -1,0 +1,43 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+.venv/
+venv/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Build / packaging
+build/
+dist/
+*.spec.bak
+installer/output/
+installer/vendor/
+
+# Model weights & large binaries — never committed
+models/
+*.gguf
+*.onnx
+*.pt
+*.safetensors
+
+# Databases & patient data — never committed
+*.db
+*.db-journal
+*.sqlite*
+inbox_readonly/
+quarantine/
+
+# Secrets
+*.key
+*.pem
+.env
+
+# Generated test artifacts (fixtures themselves ARE committed under tests/fixtures)
+tests/fixtures/_scratch/
+
+# OS noise
+.DS_Store
+Thumbs.db

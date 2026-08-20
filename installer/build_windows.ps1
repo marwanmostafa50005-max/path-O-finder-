@@ -58,6 +58,14 @@ if (-not (Test-Path "installer\vendor\llama\llama-server.exe")) {
 Write-Host "== 7. PyInstaller =="
 pyinstaller installer\pathofinder.spec --noconfirm
 
+Write-Host "== 7b. Frozen-app self-check =="
+# Launch the packaged exe in headless self-test mode: proves the frozen app
+# can import its full stack, find its bundled resources, and initialise Qt.
+# A packaging regression must fail the BUILD, never a practice machine.
+$app = Start-Process -FilePath "dist\path-O-finder\path-O-finder.exe" -ArgumentList "--selfcheck" -Wait -PassThru
+if ($app.ExitCode -ne 0) { throw "frozen app self-check failed (exit $($app.ExitCode)) - the packaged exe cannot start" }
+Write-Host "Frozen app self-check passed."
+
 Write-Host "== 8. Inno Setup =="
 # The Inno Setup installer does not add iscc to PATH; locate it ourselves.
 $iscc = (Get-Command iscc -ErrorAction SilentlyContinue).Source

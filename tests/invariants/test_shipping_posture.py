@@ -69,6 +69,27 @@ def test_invariant_installer_creates_desktop_shortcut_with_icon():
     assert '"fitz", "pymupdf", "surya"' in spec  # excluded from the bundle
 
 
+def test_invariant_entry_script_uses_absolute_imports_only():
+    """PyInstaller executes pathofinder/__main__.py as a top-level script with
+    no package context: a relative import there crashes the SHIPPED exe at
+    startup ('attempted relative import with no known parent package') while
+    working fine from source - so tests alone cannot catch it."""
+    text = (PKG / "__main__.py").read_text(encoding="utf-8")
+    for line in text.splitlines():
+        stripped = line.strip()
+        if stripped.startswith(("import ", "from ")):
+            assert not stripped.startswith("from ."), \
+                f"relative import in entry script: {stripped!r}"
+
+
+def test_invariant_build_runs_frozen_selfcheck():
+    """The Windows build must launch the packaged exe with --selfcheck and
+    fail on a non-zero exit, so packaging regressions die on the build host."""
+    ps1 = (ROOT / "installer" / "build_windows.ps1").read_text(encoding="utf-8")
+    assert "--selfcheck" in ps1 or '"--selfcheck"' in ps1
+    assert "self-check failed" in ps1
+
+
 def test_invariant_pyinstaller_spec_is_valid_python():
     spec = (ROOT / "installer" / "pathofinder.spec").read_text(encoding="utf-8")
     compile(spec, "pathofinder.spec", "exec")    # PyInstaller injects globals at build

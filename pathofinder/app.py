@@ -15,7 +15,53 @@ from .ui.main_window import MainWindow
 from .ui.signon import SignOnDialog
 
 
+def _selfcheck() -> int:
+    """Headless startup verification for the frozen build (--selfcheck).
+
+    Run by build_windows.ps1 against the PyInstaller output: proves the
+    bundled app can import its full stack, find its resources, and
+    initialise Qt offscreen - so a packaging regression fails the BUILD,
+    never a practice machine. Exit 0 = healthy."""
+    import os
+    os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
+    problems: list[str] = []
+
+    res = paths.resources_dir()
+    for rel in ("grace_matrix.yaml", "citation_map.yaml", "plausibility_bounds.yaml",
+                "spia_aliases.yaml", "fonts/Poppins-Regular.ttf",
+                "brand/pathofinder_ui.png", "brand/icon_1024.png"):
+        if not (res / rel).exists():
+            problems.append(f"missing bundled resource: {rel}")
+
+    try:
+        from .db import connection as _conn
+        if not _conn.HAVE_SQLCIPHER:
+            problems.append("sqlcipher3 not bundled - DB encryption unavailable")
+    except Exception as e:  # pragma: no cover - frozen-build guard
+        problems.append(f"db layer import failed: {e}")
+
+    try:
+        from . import pipeline as _pipeline  # noqa: F401  (pulls the whole engine stack)
+    except Exception as e:  # pragma: no cover - frozen-build guard
+        problems.append(f"pipeline import failed: {e}")
+
+    try:
+        qt_app = QApplication.instance() or QApplication(["selfcheck"])
+        theme.load_fonts()
+        del qt_app
+    except Exception as e:  # pragma: no cover - frozen-build guard
+        problems.append(f"Qt initialisation failed: {e}")
+
+    if problems:
+        print("SELFCHECK FAILED: " + "; ".join(problems))
+        return 1
+    print("SELFCHECK OK")
+    return 0
+
+
 def main() -> int:
+    if "--selfcheck" in sys.argv:
+        return _selfcheck()
     app = QApplication(sys.argv)
     app.setApplicationName(APP_NAME)
     family = theme.load_fonts()

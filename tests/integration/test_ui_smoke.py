@@ -91,6 +91,13 @@ def test_main_window_queue_and_disposition(qapp, loaded_repo):
         win.scheduler.shutdown()
 
 
+def test_app_selfcheck_passes(qapp, data_dir):
+    """The same startup verification the Windows build runs against the
+    frozen exe must pass from source too."""
+    from pathofinder import app as app_mod
+    assert app_mod._selfcheck() == 0
+
+
 def test_settings_and_audit_views_construct(qapp, loaded_repo):
     from pathofinder.config.loader import ConfigStore
     from pathofinder.ui.audit_view import AuditView

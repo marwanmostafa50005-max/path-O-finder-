@@ -5,7 +5,7 @@
 #
 # Prerequisites on the build host:
 #   - Python 3.11 x64 on PATH
-#   - Inno Setup 6 (iscc on PATH)
+#   - Inno Setup 6 (auto-located: PATH, then the standard install folders)
 #
 # Usage:  powershell -ExecutionPolicy Bypass -File installer\build_windows.ps1
 #         (add -AllowNoOcr to deliberately ship without bundled Tier-2 OCR)
@@ -59,7 +59,19 @@ Write-Host "== 7. PyInstaller =="
 pyinstaller installer\pathofinder.spec --noconfirm
 
 Write-Host "== 8. Inno Setup =="
-iscc installer\installer.iss
+# The Inno Setup installer does not add iscc to PATH; locate it ourselves.
+$iscc = (Get-Command iscc -ErrorAction SilentlyContinue).Source
+if (-not $iscc) {
+    $roots = @(${env:ProgramFiles(x86)}, $env:ProgramFiles) | Where-Object { $_ }
+    foreach ($root in $roots) {
+        $cand = Join-Path $root "Inno Setup 6\iscc.exe"
+        if (Test-Path $cand) { $iscc = $cand; break }
+    }
+}
+if (-not $iscc) {
+    throw "Inno Setup 6 not found (no iscc on PATH and not in Program Files). Install it from jrsoftware.org/isdl.php, then re-run this script."
+}
+& $iscc installer\installer.iss
 if ($LASTEXITCODE -ne 0) { throw "Inno Setup failed" }
 
 Write-Host "== DONE =="

@@ -41,3 +41,6 @@ tests/fixtures/_scratch/
 # OS noise
 .DS_Store
 Thumbs.db
+
+# pytest repo-local temp root (see pyproject addopts)
+.pytest-basetemp/

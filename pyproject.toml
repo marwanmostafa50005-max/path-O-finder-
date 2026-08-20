@@ -42,4 +42,9 @@ pathofinder = ["resources/**/*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-addopts = "-q"
+# --basetemp: a plain repo-local temp dir. Pytest's default temp root
+# (%TEMP%\pytest-of-<user>) maintains a 'pytest-current' junction that newer
+# Windows security hardening refuses to traverse (WinError 448 "untrusted
+# mount point"), crashing the session at cleanup. With an explicit basetemp,
+# no junction is ever created or visited.
+addopts = "-q --basetemp=.pytest-basetemp"

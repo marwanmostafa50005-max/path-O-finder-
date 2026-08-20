@@ -114,3 +114,16 @@ def test_invariant_non_ascii_canary_survives():
 
     from tests.fixtures import generator
     assert "Clumped — recollect" in generator.hl7_multi_obr_all_types()
+
+
+def test_invariant_installer_scripts_are_pure_ascii():
+    """Windows PowerShell 5.1 reads a BOM-less .ps1 as cp1252: an em dash's
+    0x94 byte decodes as a curly quote, which PowerShell treats as a string
+    DELIMITER - a non-ASCII character can therefore change the script's
+    parse, not just its spelling (this broke the build gate once). Inno .iss
+    and the PyInstaller .spec are held to the same bar."""
+    installer = ROOT / "installer"
+    for name in ("build_windows.ps1", "installer.iss", "pathofinder.spec"):
+        raw = (installer / name).read_bytes()
+        bad = sorted({b for b in raw if b > 0x7F})
+        assert not bad, f"{name} contains non-ASCII bytes {bad}: unsafe under cp1252 parsing"

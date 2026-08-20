@@ -1,4 +1,4 @@
-; Inno Setup script for path-O-finder — fully offline installer.
+; Inno Setup script for path-O-finder - fully offline installer.
 ; Build (on the Windows build host, after PyInstaller):
 ;   iscc installer\installer.iss
 ; Produces installer\output\path-O-finder-setup-<version>.exe

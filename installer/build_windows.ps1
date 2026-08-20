@@ -1,4 +1,4 @@
-# path-O-finder — Windows build script (run on the Windows 10/11 x64 build host).
+# path-O-finder - Windows build script (run on the Windows 10/11 x64 build host).
 # Produces installer\output\path-O-finder-setup-<version>.exe, a fully offline
 # installer. All downloads below happen at BUILD time only; the shipped app
 # makes zero network calls.
@@ -36,21 +36,21 @@ python scripts\generate_icon.py
 Write-Host "== 5. Vendor: Tesseract (Apache-2.0) =="
 # Portable Tesseract: place a portable build under installer\vendor\tesseract
 # (tesseract.exe + tessdata\eng.traineddata + its LICENSE file).
-# HARD GATE: a build without it would silently ship with Tier-2 OCR dead —
+# HARD GATE: a build without it would silently ship with Tier-2 OCR dead -
 # every scanned report would dead-end in check-yourself while the Linux-
 # validated OCR tests were skipped. Fail loudly unless explicitly overridden.
 if (-not (Test-Path "installer\vendor\tesseract\tesseract.exe")) {
     if ($AllowNoOcr) {
         Write-Warning "Building WITHOUT bundled Tesseract (-AllowNoOcr): scanned/image-only reports will all go to check-yourself unless Tesseract is installed on the practice machine."
     } else {
-        throw "installer\vendor\tesseract\tesseract.exe missing — the shipped build would silently lack OCR. Place a portable Apache-2.0 Tesseract there (tesseract.exe + tessdata\eng.traineddata + LICENSE), or re-run with -AllowNoOcr to ship without Tier-2 OCR."
+        throw "installer\vendor\tesseract\tesseract.exe missing - the shipped build would silently lack OCR. Place a portable Apache-2.0 Tesseract there (tesseract.exe + tessdata\eng.traineddata + LICENSE), or re-run with -AllowNoOcr to ship without Tier-2 OCR."
     }
 }
 
 Write-Host "== 6. Vendor: llama.cpp llama-server (MIT) + Qwen2.5-VL-7B GGUF (Apache-2.0) =="
 # Optional Tier-3. If absent the app disables Tier 3 gracefully.
 if (-not (Test-Path "installer\vendor\llama\llama-server.exe")) {
-    Write-Warning "installer\vendor\llama not found — Tier-3 VLM will be disabled in the shipped build unless the practice installs the model later."
+    Write-Warning "installer\vendor\llama not found - Tier-3 VLM will be disabled in the shipped build unless the practice installs the model later."
 }
 # Model weights are NEVER bundled into the repo; fetch at build time if wanted:
 #   python scripts\fetch_vlm_model.py --dest installer\vendor\llama\models

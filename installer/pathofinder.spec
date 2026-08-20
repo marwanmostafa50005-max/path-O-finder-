@@ -12,7 +12,7 @@ datas = [
 ]
 
 # Bundled Tesseract engine + traineddata (place under installer/vendor/tesseract
-# on the build host — see build_windows.ps1). Bundled llama-server likewise.
+# on the build host - see build_windows.ps1). Bundled llama-server likewise.
 vendor = ROOT / "installer" / "vendor"
 binaries = []
 if (vendor / "tesseract").exists():

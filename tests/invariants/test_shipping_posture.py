@@ -56,23 +56,23 @@ def test_invariant_icon_has_all_sizes():
 
 
 def test_invariant_installer_creates_desktop_shortcut_with_icon():
-    iss = (ROOT / "installer" / "installer.iss").read_text()
+    iss = (ROOT / "installer" / "installer.iss").read_text(encoding="utf-8")
     assert "desktopicon" in iss
     assert "{autodesktop}\\{#MyAppName}" in iss
     assert "SetupIconFile=pathofinder.ico" in iss
     assert "licenses" in iss                     # licence texts shipped
-    spec = (ROOT / "installer" / "pathofinder.spec").read_text()
+    spec = (ROOT / "installer" / "pathofinder.spec").read_text(encoding="utf-8")
     assert "pathofinder.ico" in spec
     assert '"fitz", "pymupdf", "surya"' in spec  # excluded from the bundle
 
 
 def test_invariant_pyinstaller_spec_is_valid_python():
-    spec = (ROOT / "installer" / "pathofinder.spec").read_text()
+    spec = (ROOT / "installer" / "pathofinder.spec").read_text(encoding="utf-8")
     compile(spec, "pathofinder.spec", "exec")    # PyInstaller injects globals at build
 
 
 def test_invariant_third_party_licenses_cover_runtime_deps():
-    text = (ROOT / "THIRD_PARTY_LICENSES.md").read_text()
+    text = (ROOT / "THIRD_PARTY_LICENSES.md").read_text(encoding="utf-8")
     for dep in ("PySide6", "hl7apy", "pdfplumber", "pypdfium2", "pytesseract",
                 "Tesseract", "Pillow", "APScheduler", "ruamel.yaml", "keyring",
                 "sqlcipher3", "llama.cpp", "Qwen2.5-VL", "Poppins", "PyInstaller"):

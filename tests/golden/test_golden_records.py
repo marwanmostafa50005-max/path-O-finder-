@@ -60,8 +60,11 @@ def test_golden(name):
     actual = CASES[name]()
     path = GOLDEN_DIR / name
     if REPIN or not path.exists():
-        path.write_text(json.dumps(actual, indent=2, sort_keys=True, ensure_ascii=False))
+        # Explicit encoding + newline: goldens must be byte-identical across
+        # platforms (Windows locale default is cp1252, which mangles UTF-8).
+        path.write_text(json.dumps(actual, indent=2, sort_keys=True, ensure_ascii=False),
+                        encoding="utf-8", newline="\n")
         if REPIN:
             pytest.skip(f"re-pinned {name}")
-    expected = json.loads(path.read_text())
+    expected = json.loads(path.read_text(encoding="utf-8"))
     assert actual == expected, f"extracted record drifted from golden file {name}"

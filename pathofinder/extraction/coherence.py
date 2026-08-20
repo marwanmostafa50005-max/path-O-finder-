@@ -26,7 +26,7 @@ from .records import (ABNORMAL_FLAGS, CHANGE_INDICATOR_FLAGS, CRITICAL_FLAGS,
 @lru_cache(maxsize=1)
 def _bounds() -> dict:
     yaml = YAML(typ="safe")
-    data = yaml.load(Path(paths.resources_dir() / "plausibility_bounds.yaml").read_text())
+    data = yaml.load(Path(paths.resources_dir() / "plausibility_bounds.yaml").read_text(encoding="utf-8"))
     return data.get("analytes") or {}
 
 

@@ -51,7 +51,8 @@ GPL_ALLOWLIST = {
 def main() -> int:
     out = subprocess.run(
         [sys.executable, "-m", "piplicenses", "--format=json", "--with-system"],
-        capture_output=True, text=True, check=True,
+        capture_output=True, check=True,
+        encoding="utf-8", errors="replace",   # Windows locale default is cp1252
     ).stdout
     rows = json.loads(out)
     failures: list[str] = []

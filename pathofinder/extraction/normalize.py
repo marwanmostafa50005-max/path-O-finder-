@@ -27,7 +27,7 @@ def _clean(name: str) -> str:
 def _seed_map() -> dict[str, tuple[str, str | None]]:
     """alias(lower) -> (canonical, loinc) from the bundled SPIA seed."""
     yaml = YAML(typ="safe")
-    data = yaml.load(Path(paths.resources_dir() / "spia_aliases.yaml").read_text())
+    data = yaml.load(Path(paths.resources_dir() / "spia_aliases.yaml").read_text(encoding="utf-8"))
     out: dict[str, tuple[str, str | None]] = {}
     for canonical, spec in (data.get("canonical") or {}).items():
         loinc = spec.get("loinc")

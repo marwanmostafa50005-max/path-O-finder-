@@ -80,6 +80,18 @@ page + pixel bbox).
 - 2026-08-18 Audit immutability: SQLite triggers raising on UPDATE/DELETE + code-level
   guard + SHA-256 hash chain (hash_self = sha256(hash_prev || canonical row JSON)).
 
+- 2026-08-20 Windows gate failure root-caused: `read_text()` without encoding in
+  the golden test decoded UTF-8 goldens as cp1252 on Windows (em dash → mojibake
+  in the EXPECTED record; engine output was identical). Fixed encoding='utf-8'
+  at every text-IO site (app + scripts + tests); goldens NOT re-pinned (byte-
+  identical). Added tests/invariants/test_encoding_discipline.py: AST scan
+  failing on any text-mode open/read_text/write_text/subprocess-text without
+  explicit encoding, golden strict-UTF-8/LF checks, and an em-dash canary.
+  Added .gitattributes (eol=lf for compared text; ps1/iss crlf; binaries marked)
+  so Windows autocrlf checkouts can't corrupt byte-compared files. Remaining
+  EncodingWarnings under PYTHONWARNDEFAULTENCODING=1 come only from third-party
+  pypdfium2_raw/version.py (its own ASCII file — harmless, not gated).
+
 ## Environment notes (this build container)
 
 - venv at .venv (Python 3.11.15). Tesseract via apt. PySide6 pip-installed for

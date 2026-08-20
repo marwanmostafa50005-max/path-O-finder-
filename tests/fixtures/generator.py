@@ -248,11 +248,15 @@ def pdf_scanned(quality: str = "good") -> bytes:
     W, H = (1654, 2339)  # ~A4 at 200dpi
     img = Image.new("L", (W, H), 255)
     d = ImageDraw.Draw(img)
-    try:
-        font = ImageFont.truetype(
-            "/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf", 40)
-    except OSError:
-        font = ImageFont.load_default()
+    # Render with the repo's own bundled Poppins so the fixture is
+    # byte-deterministic on every platform. A hard-coded system font path
+    # broke Windows: Pillow's ~10px bitmap fallback made the "good" scan
+    # unreadable and failed the OCR test on the build host.
+    # SemiBold at 48px: a genuinely clean "scan" that clears the OCR gate;
+    # the low-quality variant below degrades it far past the gate.
+    font_path = (Path(__file__).resolve().parents[2] / "pathofinder"
+                 / "resources" / "fonts" / "Poppins-SemiBold.ttf")
+    font = ImageFont.truetype(str(font_path), 48)
     rows = [
         "SynthPath Pathology - Final Report",
         "Patient: FAKEMAN, Robert  DOB: 03/11/1955",

@@ -61,6 +61,9 @@ def test_invariant_installer_creates_desktop_shortcut_with_icon():
     assert "{autodesktop}\\{#MyAppName}" in iss
     assert "SetupIconFile=pathofinder.ico" in iss
     assert "licenses" in iss                     # licence texts shipped
+    # Practice-wide data dir must be writable by every local account, or the
+    # second Windows user cannot open the shared DB.
+    assert 'Name: "{commonappdata}\\path-O-finder"; Permissions: users-modify' in iss
     spec = (ROOT / "installer" / "pathofinder.spec").read_text(encoding="utf-8")
     assert "pathofinder.ico" in spec
     assert '"fitz", "pymupdf", "surya"' in spec  # excluded from the bundle

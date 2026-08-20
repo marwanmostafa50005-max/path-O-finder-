@@ -92,6 +92,27 @@ page + pixel bbox).
   EncodingWarnings under PYTHONWARNDEFAULTENCODING=1 come only from third-party
   pypdfium2_raw/version.py (its own ASCII file — harmless, not gated).
 
+- 2026-08-20 Windows-divergence audit (multi-agent sweep) fixed, all regression-
+  tested in tests/unit/test_windows_robustness.py:
+  (1) fixture font: hard-coded Linux DejaVu path → bundled Poppins-SemiBold 48px
+      (deterministic everywhere); OCR line grouping in pdf_tier2 rewritten to
+      vertical-midpoint + height-proportional tolerance (top-based grouping split
+      'g/L' tokens onto phantom lines with proportional fonts — recall loss);
+  (2) settings save: hand-built YAML broke on backslash Windows paths
+      (ScannerError) → ruamel dump;
+  (3) watcher: per-file OSError handling — a Windows sharing violation (SM client/
+      AV holding a file) skips that file this pass and retries next scan instead
+      of aborting the run; OS shell metadata (desktop.ini/Thumbs.db/~$*/.DS_Store)
+      ignored; inbox copy names capped for MAX_PATH;
+  (4) DB key: per-user keyring + machine-wide %PROGRAMDATA% DB locked out the
+      2nd Windows account → machine-scope DPAPI blob (CryptProtectData
+      LOCAL_MACHINE, ctypes) stored beside the DB, with legacy keyring migration;
+      keyring remains the dev/CI path off-Windows;
+  (5) installer.iss [Dirs] grants users-modify on {commonappdata}\path-O-finder
+      (default ProgramData ACLs make one user's files read-only to others);
+  (6) vlm_tier3._model_path filters mmproj-* (Windows case-insensitive glob
+      matched/sorted the mmproj companion first).
+
 ## Environment notes (this build container)
 
 - venv at .venv (Python 3.11.15). Tesseract via apt. PySide6 pip-installed for

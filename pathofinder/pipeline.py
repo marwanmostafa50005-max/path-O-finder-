@@ -62,9 +62,12 @@ class Pipeline:
             self.repo.finish_run(run_id, 0, 0)
             return report
 
+        skipped: list[str] = []
         files = watcher.scan_folder(folder, paths.inbox_dir(), self.repo,
-                                    patterns=self.adapter.file_patterns())
+                                    patterns=self.adapter.file_patterns(),
+                                    skipped=skipped)
         report.files_seen = len(files)
+        report.notes.extend(skipped)   # locked/in-flight files retried next pass
 
         for f in files:
             if f.duplicate:

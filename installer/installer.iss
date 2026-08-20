@@ -30,6 +30,12 @@ ArchitecturesInstallIn64BitMode=x64compatible
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"
 
+[Dirs]
+; The practice-wide data root: every local account (doctor, RN, reception)
+; must be able to open the shared encrypted DB and its DPAPI key blob.
+; Default ProgramData ACLs make one user's files read-only to others.
+Name: "{commonappdata}\path-O-finder"; Permissions: users-modify
+
 [Files]
 ; The complete PyInstaller onedir output.
 Source: "..\dist\path-O-finder\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs

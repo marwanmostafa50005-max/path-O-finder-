@@ -42,11 +42,66 @@ class DBHandle:
     path: Path
 
 
-def _get_or_create_passphrase() -> str:
-    """Fetch the DB passphrase from the OS credential store, creating one on
-    first run. On Windows, keyring uses the DPAPI-backed Credential Locker."""
-    import keyring
+def _dpapi(data: bytes, protect: bool) -> bytes:
+    """Windows DPAPI with CRYPTPROTECT_LOCAL_MACHINE: the blob can be
+    unprotected by ANY account on THIS machine (and no other machine)."""
+    import ctypes
+    from ctypes import wintypes
 
+    class DATA_BLOB(ctypes.Structure):
+        _fields_ = [("cbData", wintypes.DWORD),
+                    ("pbData", ctypes.POINTER(ctypes.c_byte))]
+
+    crypt32 = ctypes.windll.crypt32          # type: ignore[attr-defined]
+    kernel32 = ctypes.windll.kernel32        # type: ignore[attr-defined]
+    buf = ctypes.create_string_buffer(data, len(data))
+    blob_in = DATA_BLOB(len(data), ctypes.cast(buf, ctypes.POINTER(ctypes.c_byte)))
+    blob_out = DATA_BLOB()
+    flags = 0x1 | 0x4                        # UI_FORBIDDEN | LOCAL_MACHINE
+    fn = crypt32.CryptProtectData if protect else crypt32.CryptUnprotectData
+    if not fn(ctypes.byref(blob_in), None, None, None, None, flags,
+              ctypes.byref(blob_out)):
+        raise OSError("DPAPI operation failed")
+    try:
+        return ctypes.string_at(blob_out.pbData, blob_out.cbData)
+    finally:
+        kernel32.LocalFree(blob_out.pbData)
+
+
+def _windows_machine_passphrase(db_path: Path) -> str:
+    """Machine-scope key management for the practice-wide DB.
+
+    The DB lives in %PROGRAMDATA% (one DB per machine), so a per-USER
+    credential-locker entry cannot work: the second Windows account at the
+    practice would mint a fresh passphrase and be locked out. Instead the
+    passphrase is wrapped with machine-scope DPAPI and stored beside the DB;
+    every local account can unwrap it, no other machine can. A legacy
+    per-user keyring entry (earlier builds) is migrated in-place."""
+    blob_path = db_path.with_suffix(".keyblob")
+    if blob_path.exists():
+        return _dpapi(blob_path.read_bytes(), protect=False).decode("utf-8")
+
+    legacy = None
+    try:
+        import keyring
+        legacy = keyring.get_password(KEYRING_SERVICE, KEYRING_USER)
+    except Exception:
+        pass
+    passphrase = legacy or secrets.token_urlsafe(32)
+    blob_path.parent.mkdir(parents=True, exist_ok=True)
+    blob_path.write_bytes(_dpapi(passphrase.encode("utf-8"), protect=True))
+    return passphrase
+
+
+def _get_or_create_passphrase(db_path: Path) -> str:
+    """DB passphrase, created on first run. Windows: machine-scope DPAPI blob
+    beside the DB (see _windows_machine_passphrase). Elsewhere (dev/CI): the
+    per-user OS credential store via keyring."""
+    import sys
+    if sys.platform == "win32":
+        return _windows_machine_passphrase(db_path)
+
+    import keyring
     stored = keyring.get_password(KEYRING_SERVICE, KEYRING_USER)
     if stored:
         return stored
@@ -63,7 +118,7 @@ def connect(path: Path, passphrase: str | None = None) -> DBHandle:
     path.parent.mkdir(parents=True, exist_ok=True)
 
     if HAVE_SQLCIPHER:
-        key = passphrase if passphrase is not None else _get_or_create_passphrase()
+        key = passphrase if passphrase is not None else _get_or_create_passphrase(path)
         conn = sqlcipher_dbapi2.connect(str(path))
         # Parameterised PRAGMA is not supported; escape quotes in the key.
         conn.execute(f"PRAGMA key = '{key.replace(chr(39), chr(39)*2)}'")

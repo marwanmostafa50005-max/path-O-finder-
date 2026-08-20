@@ -121,10 +121,17 @@ def _bundled_server_path() -> Path | None:
 
 
 def _model_path() -> Path | None:
+    """The main 7B GGUF, never the mmproj companion. Windows globbing is
+    case-insensitive and sorts case-insensitively, so a single pattern also
+    matches 'mmproj-Qwen2.5-VL-7B-...' and can sort it first — filter it out
+    explicitly."""
     from .. import paths
     d = paths.data_dir() / "models"
     if d.exists():
-        for f in sorted(d.glob("*qwen2.5-vl-7b*.gguf")) + sorted(d.glob("*Qwen2.5-VL-7B*.gguf")):
+        candidates = {f for f in d.glob("*.gguf")
+                      if "qwen2.5-vl-7b" in f.name.lower()
+                      and not f.name.lower().startswith("mmproj")}
+        for f in sorted(candidates):
             return f
     return None
 

@@ -43,20 +43,36 @@ class PageText:
 
 
 def _lines_from_words(words: list[dict], y_tol: float = 3.0) -> list[list[dict]]:
-    lines: list[list[dict]] = []
-    for w in sorted(words, key=lambda w: (w["top"], w["x0"])):
+    """Group words into visual lines by vertical MIDPOINT, with a tolerance
+    proportional to glyph height. Grouping by word top breaks on proportional
+    fonts: tokens with ascender/descender extremes (e.g. 'g/L') get taller
+    boxes with different tops and split onto phantom lines, so a readable
+    line silently fails the result pattern (recall loss, found via OCR
+    fixtures rendered in the bundled proportional font)."""
+    def _mid(w: dict) -> float:
+        return (w["top"] + w["bottom"]) / 2
+
+    def _h(w: dict) -> float:
+        return max(1.0, w["bottom"] - w["top"])
+
+    lines: list[dict] = []
+    for w in sorted(words, key=lambda w: (_mid(w), w["x0"])):
         placed = False
         for line in lines:
-            if abs(line[0]["top"] - w["top"]) <= y_tol:
-                line.append(w)
+            tol = max(y_tol, 0.6 * max(_h(w), line["h"]))
+            if abs(line["mid"] - _mid(w)) <= tol:
+                line["words"].append(w)
+                n = len(line["words"])
+                line["mid"] += (_mid(w) - line["mid"]) / n   # running mean
+                line["h"] = max(line["h"], _h(w))
                 placed = True
                 break
         if not placed:
-            lines.append([w])
+            lines.append({"words": [w], "mid": _mid(w), "h": _h(w)})
     for line in lines:
-        line.sort(key=lambda w: w["x0"])
-    lines.sort(key=lambda l: l[0]["top"])
-    return lines
+        line["words"].sort(key=lambda w: w["x0"])
+    lines.sort(key=lambda l: l["mid"])
+    return [line["words"] for line in lines]
 
 
 def native_pages(pdf_bytes: bytes) -> list[PageText]:

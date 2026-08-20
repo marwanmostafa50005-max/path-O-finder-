@@ -182,17 +182,26 @@ class SettingsView(QWidget):
             self.folder.setText(d)
 
     def _save_settings(self):
-        yaml_text = (
-            f'watched_folder: "{self.folder.text().strip()}"\n'
-            f"source_adapter: {self.adapter.currentText()}\n"
-            f"closed_loop_mode: {self.mode.currentText()}\n"
-            f"closed_loop_strictness: {self.strictness.currentText()}\n"
-            f"ocr_confidence_gate: {self.gate.value()}\n"
-            f"vlm_enabled: {self.vlm.currentText()}\n"
-            f"overnight_build_hour: {self.hour.value()}\n"
-        )
+        # Serialise via ruamel, never f-strings: a typed/pasted Windows path
+        # ('C:\Users\...') inside a hand-built double-quoted scalar is a YAML
+        # escape sequence and breaks the save (ScannerError) or corrupts it.
+        import io as _io
+
+        from ruamel.yaml import YAML as _YAML
+
+        data = {
+            "watched_folder": self.folder.text().strip(),
+            "source_adapter": self.adapter.currentText(),
+            "closed_loop_mode": self.mode.currentText(),
+            "closed_loop_strictness": self.strictness.currentText(),
+            "ocr_confidence_gate": self.gate.value(),
+            "vlm_enabled": self.vlm.currentText(),
+            "overnight_build_hour": self.hour.value(),
+        }
+        buf = _io.StringIO()
+        _YAML().dump(data, buf)
         try:
-            self.store.save("settings", yaml_text, self.initials)
+            self.store.save("settings", buf.getvalue(), self.initials)
             QMessageBox.information(self, "Saved", "Practice settings saved (audited).")
         except Exception as e:
             QMessageBox.warning(self, "Not saved", str(e))

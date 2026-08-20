@@ -141,6 +141,17 @@ class SettingsView(QWidget):
         self.gate.setValue(int(s.get("ocr_confidence_gate", 80)))
         form.addRow("OCR confidence gate (below → check-yourself)", self.gate)
 
+        from ..extraction import pdf_tier2
+        ocr_cmd = pdf_tier2._tesseract_cmd()
+        ocr_status = QLabel(
+            f"OCR engine found: {ocr_cmd}" if ocr_cmd else
+            "OCR engine NOT FOUND — every scanned/image-only report will go to "
+            "check-yourself unread. Install Tesseract or use an installer built "
+            "with the bundled engine.")
+        ocr_status.setObjectName("subtitle" if ocr_cmd else "severity-critical")
+        ocr_status.setWordWrap(True)
+        form.addRow("", ocr_status)
+
         self.vlm = QComboBox()
         self.vlm.addItems(["auto", "on", "off"])
         self.vlm.setCurrentText(s.get("vlm_enabled", "auto"))

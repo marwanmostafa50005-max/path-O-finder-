@@ -113,6 +113,18 @@ page + pixel bbox).
   (6) vlm_tier3._model_path filters mmproj-* (Windows case-insensitive glob
       matched/sorted the mmproj companion first).
 
+- 2026-08-20 Audit round 3 (adversarial verify pass, 27 agents, 2 confirmed):
+  (7) serial_values gains `ORDER BY created_at DESC, result_id DESC` — Windows
+      CPython <=3.12 clock granularity (~15.6ms) makes one-pass inserts share
+      byte-identical created_at, and SQLite tie order is unspecified (the
+      display-only serial panel could render out of chronological order);
+  (8) Tier-2 OCR can no longer silently vanish from a shipped build:
+      _tesseract_cmd also probes conventional Windows install roots
+      (Program Files / LOCALAPPDATA\Programs Tesseract-OCR — the standard
+      installer does not add PATH), build_windows.ps1 HARD-FAILS on a missing
+      vendor bundle unless -AllowNoOcr, and Settings surfaces live OCR engine
+      status. Regression tests in test_windows_robustness.py (99 total green).
+
 ## Environment notes (this build container)
 
 - venv at .venv (Python 3.11.15). Tesseract via apt. PySide6 pip-installed for

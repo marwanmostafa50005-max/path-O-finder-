@@ -8,6 +8,9 @@
 #   - Inno Setup 6 (iscc on PATH)
 #
 # Usage:  powershell -ExecutionPolicy Bypass -File installer\build_windows.ps1
+#         (add -AllowNoOcr to deliberately ship without bundled Tier-2 OCR)
+
+param([switch]$AllowNoOcr)
 
 $ErrorActionPreference = "Stop"
 Set-Location (Join-Path $PSScriptRoot "..")
@@ -32,10 +35,16 @@ python scripts\generate_icon.py
 
 Write-Host "== 5. Vendor: Tesseract (Apache-2.0) =="
 # Portable Tesseract: place a portable build under installer\vendor\tesseract
-# (tesseract.exe + tessdata\eng.traineddata + its LICENSE file). If already
-# present, this step is skipped — keep the build reproducible/offline-capable.
+# (tesseract.exe + tessdata\eng.traineddata + its LICENSE file).
+# HARD GATE: a build without it would silently ship with Tier-2 OCR dead —
+# every scanned report would dead-end in check-yourself while the Linux-
+# validated OCR tests were skipped. Fail loudly unless explicitly overridden.
 if (-not (Test-Path "installer\vendor\tesseract\tesseract.exe")) {
-    Write-Warning "installer\vendor\tesseract not found — OCR will rely on a system Tesseract. Place a portable Apache-2.0 build there for the shipped installer."
+    if ($AllowNoOcr) {
+        Write-Warning "Building WITHOUT bundled Tesseract (-AllowNoOcr): scanned/image-only reports will all go to check-yourself unless Tesseract is installed on the practice machine."
+    } else {
+        throw "installer\vendor\tesseract\tesseract.exe missing — the shipped build would silently lack OCR. Place a portable Apache-2.0 Tesseract there (tesseract.exe + tessdata\eng.traineddata + LICENSE), or re-run with -AllowNoOcr to ship without Tier-2 OCR."
+    }
 }
 
 Write-Host "== 6. Vendor: llama.cpp llama-server (MIT) + Qwen2.5-VL-7B GGUF (Apache-2.0) =="

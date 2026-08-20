@@ -147,7 +147,10 @@ class Repository:
             "SELECT result_id, value_raw, value_num, unit_raw, ref_range_raw,"
             " lab_abnormal_flag, created_at FROM results"
             " WHERE patient_id=? AND analyte_canonical=? AND superseded_by IS NULL"
-            " ORDER BY created_at DESC LIMIT ?",
+            # result_id tie-breaker: Windows CPython <=3.12 has ~15.6ms clock
+            # granularity, so one pass can insert byte-identical created_at
+            # strings and SQLite's tie order is unspecified.
+            " ORDER BY created_at DESC, result_id DESC LIMIT ?",
             (patient_id, analyte_canonical, limit),
         ).fetchall()
         return [dict(r) for r in rows]

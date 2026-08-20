@@ -89,8 +89,25 @@ def native_pages(pdf_bytes: bytes) -> list[PageText]:
     return pages
 
 
+def _windows_install_candidates() -> list[Path]:
+    """Conventional Windows install locations. The standard Tesseract
+    installer (UB Mannheim) does NOT add tesseract.exe to PATH, so a
+    practice that installed it manually would otherwise never be found."""
+    import os
+    roots: list[str] = []
+    for env in ("ProgramFiles", "ProgramFiles(x86)"):
+        val = os.environ.get(env)
+        if val:
+            roots.append(val)
+    lad = os.environ.get("LOCALAPPDATA")
+    if lad:
+        roots.append(str(Path(lad) / "Programs"))
+    return [Path(r) / "Tesseract-OCR" / "tesseract.exe" for r in roots]
+
+
 def _tesseract_cmd() -> str | None:
-    """Bundled engine first (PyInstaller vendor dir), then PATH."""
+    """Bundled engine first (PyInstaller vendor dir), then PATH, then the
+    conventional Windows install locations."""
     import shutil
     import sys
     base = getattr(sys, "_MEIPASS", None)
@@ -99,7 +116,14 @@ def _tesseract_cmd() -> str | None:
             cand = Path(base) / "vendor" / "tesseract" / name
             if cand.exists():
                 return str(cand)
-    return shutil.which("tesseract")
+    which = shutil.which("tesseract")
+    if which:
+        return which
+    if sys.platform == "win32":
+        for cand in _windows_install_candidates():
+            if cand.exists():
+                return str(cand)
+    return None
 
 
 def tesseract_available() -> bool:

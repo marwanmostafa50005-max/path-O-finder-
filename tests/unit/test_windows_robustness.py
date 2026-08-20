@@ -123,6 +123,51 @@ def test_machine_passphrase_blob_roundtrip_and_legacy_migration(tmp_path, monkey
     assert connection._windows_machine_passphrase(blob2) == "legacy-pass"
 
 
+def test_serial_values_deterministic_on_timestamp_ties(repo):
+    """Windows CPython <=3.12 has ~15.6ms clock granularity: results inserted
+    in one pass share byte-identical created_at strings, and SQLite tie order
+    is unspecified. The serial-values panel (display-only, clinician eyeballs
+    trends) must still show newest-first via the result_id tie-breaker."""
+    pid = repo.upsert_patient("MRN9", "TIE", "Case", "1970-01-01", "F")
+    mid = repo.record_message(source_adapter="t", original_path="/t", file_type="hl7",
+                              sha256="tie1", status="parsed")
+    oid = repo.insert_order(mid, filler_order_number="FIL-T", panel_name="UEC")
+    same_ts = "2026-08-20T01:02:03+00:00"          # identical, as on Windows
+    for val in (5.1, 5.5, 6.1):                     # inserted oldest → newest
+        repo.insert_result(oid, pid, {
+            "analyte_raw": "Potassium", "analyte_canonical": "potassium",
+            "value_raw": str(val), "value_num": val, "unit_raw": "mmol/L",
+            "lab_abnormal_flag": "H", "extraction_tier": 1, "confidence": 1.0,
+            "provenance_json": "{}", "coherence_status": "ok",
+            "created_at": same_ts,
+        })
+    series = repo.serial_values(pid, "potassium")
+    assert [r["value_num"] for r in series] == [6.1, 5.5, 5.1]  # newest first
+
+
+def test_tesseract_probe_covers_windows_install_locations(monkeypatch, tmp_path):
+    """The standard Windows Tesseract installer does not add itself to PATH;
+    the probe must cover the conventional install roots."""
+    from pathofinder.extraction import pdf_tier2
+    monkeypatch.setenv("ProgramFiles", r"C:\Program Files")
+    monkeypatch.setenv("ProgramFiles(x86)", r"C:\Program Files (x86)")
+    monkeypatch.setenv("LOCALAPPDATA", r"C:\Users\x\AppData\Local")
+    cands = [str(c) for c in pdf_tier2._windows_install_candidates()]
+    assert any(c.startswith(r"C:\Program Files") and c.endswith("tesseract.exe")
+               for c in cands)
+    assert any("AppData" in c and "Programs" in c for c in cands)
+
+
+def test_build_script_hard_gates_missing_ocr_bundle():
+    """A vendor-less Windows build must FAIL, not warn-and-ship: the OCR tests
+    are skip-gated, so nothing else in the chain would catch a build whose
+    scanned-report tier is silently dead."""
+    ps1 = (Path(__file__).resolve().parents[2] / "installer"
+           / "build_windows.ps1").read_text(encoding="utf-8")
+    assert "param([switch]$AllowNoOcr)" in ps1
+    assert "throw" in ps1 and "vendor\\tesseract\\tesseract.exe missing" in ps1
+
+
 def test_vlm_model_path_never_selects_mmproj(tmp_path, monkeypatch, data_dir):
     from pathofinder.extraction import vlm_tier3
     models = Path(data_dir) / "models"
